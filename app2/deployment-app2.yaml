@@ -1,0 +1,28 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: my-deployment-app2
+  labels:
+    app: vishu-app2
+spec:
+  replicas: 3
+  revisionHistoryLimit: 5
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 0
+  selector:
+    matchLabels:
+      app: vishu-app2
+  template:
+    metadata:
+      labels:
+        app: vishu-app2
+    spec:
+      containers:
+      - name: my-container
+        image: 692701344220.dkr.ecr.eu-west-3.amazonaws.com/cbz:latest
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 80
