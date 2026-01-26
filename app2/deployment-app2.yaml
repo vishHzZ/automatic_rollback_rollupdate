@@ -21,8 +21,8 @@ spec:
         app: vishu-app2
     spec:
       containers:
-      - name: my-container
-        image: 692701344220.dkr.ecr.eu-west-3.amazonaws.com/cbz:latest
+      - name: vishu-app2
+        image: 692701344220.dkr.ecr.eu-west-3.amazonaws.com/cbz:v2
         imagePullPolicy: Always
         ports:
         - containerPort: 80
