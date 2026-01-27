@@ -1,19 +1,111 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <title>App1 - Vishu</title>
-  <style>
-    body {
-      background: linear-gradient(to right, #1e3c72, #2a5298);
-      color: white;
-      text-align: center;
-      font-family: Arial;
-      padding-top: 100px;
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DevOps Engineer Portfolio</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1e1e2f 0%, #111119 100%);
+            color: white;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 50px 20px;
+            margin: 0;
+            min-height: 100vh;
+        }
+
+        h1 {
+            font-size: 3em;
+            background: linear-gradient(to right, #00d2ff, #3a7bd5);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            margin-bottom: 50px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .tools-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            justify-content: center;
+            max-width: 1000px;
+        }
+
+        .tool-card {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 15px;
+            padding: 20px;
+            width: 200px;
+            text-align: center;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(5px);
+        }
+
+        .tool-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 10px 20px rgba(0, 210, 255, 0.2);
+            border-color: rgba(0, 210, 255, 0.5);
+        }
+
+        .tool-icon {
+            font-size: 3em;
+            margin-bottom: 15px;
+            display: block;
+        }
+
+        .tool-card h3 {
+            margin: 10px 0;
+            color: #eee;
+        }
+
+        .tool-card p {
+            font-size: 0.9em;
+            color: #aaa;
+        }
+        
+        /* Colored icons for effect */
+        .docker { color: #0db7ed; }
+        .k8s { color: #326ce5; }
+        .jenkins { color: #d24939; }
+        .aws { color: #ff9900; }
+
+    </style>
 </head>
 <body>
-  <h1>🚀 App1 Deployed Successfully</h1>
-  <h2>Jenkins + EKS + ECR</h2>
+
+    <h1>DevOps Engineer</h1>
+
+    <div class="tools-container">
+        <div class="tool-card">
+            <span class="tool-icon docker">🐳</span>
+            <h3>Docker</h3>
+            <p>Containerization</p>
+        </div>
+        
+        <div class="tool-card">
+            <span class="tool-icon k8s">☸️</span>
+            <h3>Kubernetes</h3>
+            <p>Orchestration</p>
+        </div>
+        
+        <div class="tool-card">
+            <span class="tool-icon jenkins">⚙️</span>
+            <h3>Jenkins</h3>
+            <p>CI/CD Pipelines</p>
+        </div>
+        
+        <div class="tool-card">
+            <span class="tool-icon aws">☁️</span>
+            <h3>AWS</h3>
+            <p>Cloud Infrastructure</p>
+        </div>
+    </div>
+
 </body>
 </html>
