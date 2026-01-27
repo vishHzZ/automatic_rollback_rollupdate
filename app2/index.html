@@ -1,19 +1,74 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <title>App2 - Vishu</title>
-  <style>
-    body {
-      background: linear-gradient(to right, #0f2027, #203a43, #2c5364);
-      color: white;
-      text-align: center;
-      font-family: Arial;
-      padding-top: 100px;
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Software Engineer Portfolio</title>
+    <!-- Importing FontAwesome for tool icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com">
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            text-align: center;
+        }
+        .container {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+            backdrop-filter: blur(4px);
+            border: 1px solid rgba(255, 255, 255, 0.18);
+        }
+        h1 {
+            font-size: 3rem;
+            margin-bottom: 10px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            background: linear-gradient(to right, #4facfe 0%, #00f2fe 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        p {
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+        .tools {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-top: 30px;
+            font-size: 2rem;
+        }
+        .tool-icon {
+            transition: transform 0.3s ease, color 0.3s ease;
+            cursor: pointer;
+        }
+        .tool-icon:hover {
+            transform: scale(1.3);
+            color: #00f2fe;
+        }
+        .fab { color: #fff; }
+        .fas { color: #fff; }
+    </style>
 </head>
 <body>
-  <h1>🔥 App2 Deployed Successfully</h1>
-  <h2>Auto Rollback Enabled</h2>
+    <div class="container">
+        <h1>Software Engineer</h1>
+        <p>Crafting code, building solutions.</p>
+        <div class="tools">
+            <i class="fab fa-github tool-icon" title="GitHub"></i>
+            <i class="fab fa-js-square tool-icon" title="JavaScript"></i>
+            <i class="fab fa-python tool-icon" title="Python"></i>
+            <i class="fas fa-database tool-icon" title="Database"></i>
+            <i class="fab fa-docker tool-icon" title="Docker"></i>
+        </div>
+    </div>
 </body>
 </html>
