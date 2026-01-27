@@ -1,0 +1,155 @@
+pipeline {
+    agent any
+
+    environment {
+        AWS_ACCESS_KEY_ID     = credentials('aws-id')
+        AWS_SECRET_ACCESS_KEY = credentials('aws-key')
+        AWS_DEFAULT_REGION    = 'eu-west-3'
+
+        ECR_REGISTRY = '692701344220.dkr.ecr.eu-west-3.amazonaws.com'
+        ECR_REPO     = 'cbz'
+
+        APP1_TAG = 'v1'
+        APP2_TAG = 'v2'
+
+        CLUSTER_NAME = 'my-cluster'
+    }
+
+    parameters{
+        choice(name: 'ACTION', choices: ['v1-chalao','v2-chalao','rollback-v1-chalao'], description: 'Choose website version Action wisely')
+    }
+
+    stages {
+
+        stage('Checkout Code') {
+            steps {
+                git branch: 'main',
+                    url: 'https://github.com/vishHzZ/automatic_rollback_rollupdate.git'
+            }
+        }
+
+        stage('Validate ECR Repo Exists') {
+            steps {
+                sh '''
+                aws ecr describe-repositories \
+                  --repository-names ${ECR_REPO} \
+                  --region ${AWS_DEFAULT_REGION}
+                '''
+            }
+        }
+
+        stage('Install kubectl') {
+            steps {
+                sh '''
+                if ! command -v kubectl >/dev/null; then
+                  curl -LO https://dl.k8s.io/release/$(curl -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl
+                  chmod +x kubectl
+                  sudo mv kubectl /usr/local/bin/kubectl
+                fi
+                kubectl version --client
+                '''
+            }
+        }
+
+        stage('Login to ECR') {
+            steps {
+                sh '''
+                aws ecr get-login-password --region ${AWS_DEFAULT_REGION} \
+                | docker login --username AWS --password-stdin ${ECR_REGISTRY}
+                '''
+            }
+        }
+
+        stage('Build & Push App1 Image (v1)') {
+            steps {
+                sh '''
+                docker build -t ${ECR_REPO}:${APP1_TAG} .
+                docker tag ${ECR_REPO}:${APP1_TAG} \
+                  ${ECR_REGISTRY}/${ECR_REPO}:${APP1_TAG}
+                docker push ${ECR_REGISTRY}/${ECR_REPO}:${APP1_TAG}
+                '''
+            }
+        }
+
+        stage('Build & Push App2 Image (v2)') {
+            steps {
+                dir('app2') {
+                    sh '''
+                    docker build -t ${ECR_REPO}:${APP2_TAG} .
+                    docker tag ${ECR_REPO}:${APP2_TAG} \
+                      ${ECR_REGISTRY}/${ECR_REPO}:${APP2_TAG}
+                    docker push ${ECR_REGISTRY}/${ECR_REPO}:${APP2_TAG}
+                    '''
+                }
+            }
+        }
+
+        stage('Connect to EKS') {
+            steps {
+                sh '''
+                aws eks update-kubeconfig \
+                  --name ${CLUSTER_NAME} \
+                  --region ${AWS_DEFAULT_REGION}
+                '''
+            }
+        }
+
+        stage('Deploy App1 (Rolling + Rollback)') {
+            steps {
+
+                script {
+
+                    if (params.ACTION == 'v1-chalao') {
+
+                    sh 'kubectl apply -f deployment.yaml'
+                    sh 'kubectl apply -f service-app1.yaml'                        
+                        //sh 'terraform apply -auto-approve tfplan'
+                    } else if (params.ACTION == 'v2-chalao') {
+                        //sh 'terraform destroy -auto-approve'
+                        sh 'kubectl set image deployment/my-deployment vishu-app1=692701344220.dkr.ecr.eu-west-3.amazonaws.com/cbz:v2'
+                    } else if (params.ACTION == 'rollback-v1-chalao') {
+                        sh 'kubectl rollout undo deployment/my-deployment'
+                    }
+                }
+                /*script {
+                    sh 'kubectl apply -f deployment.yaml'
+                    sh 'kubectl apply -f service-app1.yaml'
+
+                    try {
+                        sh 'kubectl rollout status deployment/my-deployment --timeout=180s'
+                    } catch (Exception e) {
+                        echo '❌ App1 rollout failed → rolling back'
+                        sh 'kubectl rollout undo deployment/my-deployment'
+                        error 'App1 deployment failed'
+                    }
+                }*/
+            }
+        }
+
+        // stage('Deploy App2 (Rolling + Rollback)') {
+        //     steps {
+        //         script {
+        //             sh 'kubectl apply -f app2/deployment-app2.yaml'
+        //             sh 'kubectl apply -f app2/service-app2.yaml'
+
+        //             try {
+        //                 sh 'kubectl rollout status deployment/my-deployment-app2 --timeout=180s'
+        //             } catch (Exception e) {
+        //                 echo '❌ App2 rollout failed → rolling back'
+        //                 sh 'kubectl rollout undo deployment/my-deployment-app2'
+        //                 error 'App2 deployment failed'
+        //             }
+        //         }
+        //     }
+        // }
+    }
+
+    post {
+        success {
+            echo '🎉 SUCCESS: App1(v1) deployed with rolling updates'
+        }
+        failure {
+            echo '❌ PIPELINE FAILED — AUTO ROLLBACK EXECUTED'
+        }
+    }
+}
