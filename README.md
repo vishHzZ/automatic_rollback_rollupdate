@@ -61,6 +61,7 @@ Jenkins pipeline is triggered automatically.
 Jenkins builds a Docker image from the Dockerfile.
 
 **Create Cluster**                                                                                                                                   
+
 Using Jenkinsfile  Create a Cluster  
 
 **Push to Amazon ECR**  
