@@ -1,25 +1,26 @@
-🚀 Executive Project Overview – CI/CD on AWS EKS  
-📌 Project Title
+🚀 End-to-End CI/CD Pipeline on AWS EKS
+Using Jenkins, Docker, Amazon ECR & Kubernetes
 
-**End-to-End CI/CD Pipeline using Jenkins, Docker, Amazon ECR, and AWS EKS**
+
+# End-to-End CI/CD Pipeline using Jenkins, Docker, Amazon ECR, and AWS EKS
 
 🎯 Objective
 
 Design and implement a production-grade CI/CD pipeline that automatically builds, scans, pushes, and deploys a containerized frontend application to AWS Elastic Kubernetes Service (EKS) using Jenkins.
 
-**This setup supports:**
+##This setup supports:##
 
-Automated builds from GitHub
+1) Automated builds from GitHub
 
-Docker image creation & push to Amazon ECR
+2) Docker image creation & push to Amazon ECR
 
-Kubernetes deployment on EKS using jenkinsfile
+3) Kubernetes deployment on EKS using jenkinsfile
 
-Zero‑downtime rolling updates
+4) Zero‑downtime rolling updates
 
-Fast rollback using Kubernetes
+5) Fast rollback using Kubernetes
 
-External access via AWS LoadBalancer
+6) External access via AWS LoadBalancer
 
 🧩 High‑Level Architecture (EKS‑Specific)  
 Developer  
@@ -49,32 +50,33 @@ Kubernetes Cluster (EKS)
 End Users (LoadBalancer )
 
   
-**🔁** **CI/CD Flow Explanation (Clear & Step‑by‑Step)**
+##🔁CI/CD Flow Explanation (Clear & Step‑by‑Step)##
 
-**Code Commit  
-**Developer pushes code (HTML + Dockerfile) to GitHub.
+### Code Commit  
+#### Developer pushes code (HTML + Dockerfile) to GitHub.
 
-**Jenkins Trigger**  
-Jenkins pipeline is triggered automatically.
+### Jenkins Trigger
+#### Jenkins pipeline is triggered automatically.
 
-**Build Stage**  
-Jenkins builds a Docker image from the Dockerfile.
+### Build Stage 
+#### Jenkins builds a Docker image from the Dockerfile.
 
-**Create Cluster**                                                                                                                                   
+### Create Cluster                                                                                                                                
 
-Using Jenkinsfile  Create a Cluster  
+#### Using Jenkinsfile  Create a Cluster  
 
-**Push to Amazon ECR**  
-Jenkins authenticates with AWS and pushes the image to ECR.
+### Push to Amazon ECR**  
+#### Jenkins authenticates with AWS and pushes the image to ECR.
 
-**Deploy to AWS EKS**  
-Jenkins applies Kubernetes YAML files using kubectl.
+### Deploy to AWS EKS**  
+#### Jenkins applies Kubernetes YAML files using kubectl.
 
-**Service Exposure**  
-Application is exposed using a Kubernetes LoadBalancer.
+### Service Exposure**  
 
-**Rolling Update**  
-New pods are created gradually without downtime.
+#### Application is exposed using a Kubernetes LoadBalancer.
+
+### Rolling Update**  
+#### New pods are created gradually without downtime.
 
 **🔄** **Rollout & Rollback Strategy (With LoadBalancer)****✅ Rolling Update**
 
